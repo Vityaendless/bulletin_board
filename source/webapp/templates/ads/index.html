@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h1>Ads</h1>
+    {% for ad in ads %}
+        <div class="card my-1">
+            <div class="card-body">
+                <h5 class="card-title">{{ ad.title }}</h5>
+                <p class="card-text">{{ ad.description }}</p>
+                <p class="card-text">{{ ad.get_category_display }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <p>No ads</p>
+    {% endfor %}
+{% endblock %}
