@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <h1>Ads</h1>
+    <div>
+        {% include 'partial/search.html' %}
+    </div>
+    <div>
+        {% include 'partial/pagination.html' %}
+    </div>
+    <h1>Ads list</h1>
     {% for ad in ads %}
         <div class="card my-1">
             <div class="card-body">
