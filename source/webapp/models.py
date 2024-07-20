@@ -28,8 +28,8 @@ class Ad(AbstractModel):
     def __str__(self):
         return f"This is ad {self.id}, {self.title}"
 
-    # def get_absolute_url(self):
-    #     return reverse('webapp:article_view', kwargs={'pk': self.pk})
+    def get_absolute_url(self):
+        return reverse('webapp:ad_view', kwargs={'pk': self.pk})
 
 
 class Category(models.Model):

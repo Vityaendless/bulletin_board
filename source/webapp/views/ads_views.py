@@ -1,7 +1,8 @@
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.db.models import Q
 from django.utils.http import urlencode
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 
 from ..models import Ad
 from ..forms import SimpleSearchForm, AdForm
@@ -60,9 +61,21 @@ class AdCreateView(CreateView):
         ad = form.save(commit=False)
         ad.author = self.request.user
         ad.save()
-        return redirect('webapp:index')#, pk=product.pk)
+        return redirect('webapp:ad_view', pk=ad.pk)
 
 
 class AdView(DetailView):
     model = Ad
     template_name = 'ads/ad_details.html'
+
+
+class AdUpdateView(UpdateView):
+    template_name = 'ads/ad_update.html'
+    model = Ad
+    form_class = AdForm
+
+
+class AdDeleteView(DeleteView):
+    template_name = 'ads/ad_delete.html'
+    model = Ad
+    success_url = reverse_lazy('webapp:index')

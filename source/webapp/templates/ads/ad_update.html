@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Update Ad{% endblock %}
+{% block content %}
+<h1>Update Ad</h1>
+    {% include 'partial/form.html' with value_submit='Update product' form_method='post' enctype='multipart/form-data' %}
+{% endblock %}
