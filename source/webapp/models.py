@@ -16,9 +16,9 @@ class AbstractModel(models.Model):
 
 
 class Ad(AbstractModel):
-    photo = models.ImageField(upload_to='publications_images', verbose_name='Photo')
+    photo = models.ImageField(upload_to='publications_images', null=True, blank=True, verbose_name='Photo')
     title = models.CharField(max_length=50, null=False, blank=False, verbose_name="Title")
-    description = models.TextField(max_length=500, verbose_name="Description")
+    description = models.TextField(max_length=500, null=True, blank=True, verbose_name="Description")
     author = models.ForeignKey(USER, null=False, blank=False, related_name='ads', on_delete=models.CASCADE, verbose_name="Author")
     category = models.ForeignKey('webapp.Category', related_name='ads', on_delete=models.CASCADE, verbose_name='Category')
     price = models.FloatField(default=0, verbose_name='Price')
