@@ -1,0 +1,15 @@
+<form action="{{ action_url }}" method="{{ form_method }}"  enctype="{{ enctype }}">
+    {% csrf_token %}
+    {% for error in form.non_field_errors %}
+        <p class="text-danger">{{ error }}</p>
+    {% endfor %}
+    {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}:</label><br/>
+        {{ field }}<br/>
+        {% for error in field.errors %}
+            <p class="tex-danger">{{ error }}</p>
+        {% endfor %}
+    {% endfor %}
+    <br/>
+    <input class="btn btn-light border border-black" type="submit" value="{{ value_submit }}"/>
+</form>

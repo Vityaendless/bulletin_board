@@ -1,9 +1,10 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 from django.db.models import Q
 from django.utils.http import urlencode
+from django.shortcuts import redirect, get_object_or_404
 
 from ..models import Ad
-from ..forms import SimpleSearchForm
+from ..forms import SimpleSearchForm, AdForm
 
 
 class IndexView(ListView):
@@ -43,3 +44,20 @@ class IndexView(ListView):
             context['query'] = urlencode({'search': self.search_value})
             context['search_value'] = self.search_value
         return context
+
+
+class AdCreateView(CreateView):
+    template_name = 'ads/ad_create.html'
+    model = Ad
+    form_class = AdForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('webapp:index')
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        ad = form.save(commit=False)
+        ad.author = self.request.user
+        ad.save()
+        return redirect('webapp:index')#, pk=product.pk)
