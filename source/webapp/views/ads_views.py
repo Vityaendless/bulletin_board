@@ -63,16 +63,26 @@ class AdCreateView(PermissionRequiredMixin, CreateView):
         return redirect('webapp:ad_view', pk=ad.pk)
 
     def has_permission(self):
-        return super().has_permission() or self.request.user.is_authenticated
+        return self.request.user.is_authenticated
 
     def handle_no_permission(self):
         messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())
         return redirect('webapp:index')
 
 
-class AdView(DetailView):
+class AdView(PermissionRequiredMixin, DetailView):
     model = Ad
     template_name = 'ads/ad_details.html'
+    permission_required = 'webapp.view_ad'
+
+    def has_permission(self):
+        if int(self.get_object().status) == 2:
+            return True
+        return False
+
+    def handle_no_permission(self):
+        messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())
+        return redirect('webapp:index')
 
 
 class AdUpdateView(PermissionRequiredMixin, UpdateView):
