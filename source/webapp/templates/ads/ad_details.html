@@ -7,6 +7,7 @@
 {% endblock %}
 {% block content %}
     <h1>Ad</h1>
+    {% include "partial/messages.html" %}
     <div class="card mb-2">
         <img src="{% if ad.photo %}{{ ad.photo.url }}{% else %}{% static 'img/ad.jpg' %}{% endif %}" class="card-img-top w-50 mx-auto" alt="{{ ad.title }}">
         <div class="card-body">

@@ -13,7 +13,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ ad.title }}</h5>
                 <p class="card-text">{{ ad.description }}</p>
-                <p class="card-text">{{ ad.get_category_display }}</p>
+                <p class="card-text">{{ ad.get_status_display }}</p>
                 <a href="{% url 'webapp:ad_view' pk=ad.pk %}" class="card-link">Details</a>
             </div>
         </div>

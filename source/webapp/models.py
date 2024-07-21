@@ -22,7 +22,7 @@ class Ad(AbstractModel):
     author = models.ForeignKey(USER, null=False, blank=False, related_name='ads', on_delete=models.CASCADE, verbose_name="Author")
     category = models.ForeignKey('webapp.Category', related_name='ads', on_delete=models.CASCADE, verbose_name='Category')
     price = models.FloatField(default=0, verbose_name='Price')
-    status = models.CharField(max_length=30, null=False, blank=False, verbose_name='Category', choices=STATUSES, default=0)
+    status = models.CharField(max_length=30, null=False, blank=False, verbose_name='Category', choices=STATUSES, default=1)
     published_at = models.DateTimeField(verbose_name="Published at", null=True, blank=True)
 
     def __str__(self):
