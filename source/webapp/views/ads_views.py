@@ -1,8 +1,7 @@
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.db.models import Q
 from django.utils.http import urlencode
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 
@@ -90,8 +89,13 @@ class AdUpdateView(PermissionRequiredMixin, UpdateView):
 class AdDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'ads/ad_delete.html'
     model = Ad
-    success_url = reverse_lazy('webapp:index')
     permission_required = 'webapp.delete_ad'
+
+    def post(self, request, *args, **kwargs):
+        ad = get_object_or_404(Ad, pk=kwargs.get('pk'))
+        ad.status = 4
+        ad.save()
+        return redirect('webapp:index')
 
     def has_permission(self):
         return super().has_permission() or self.request.user == self.get_object().author
