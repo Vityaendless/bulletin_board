@@ -50,21 +50,24 @@ class IndexView(ListView):
         return context
 
 
-class AdCreateView(CreateView):
+class AdCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'ads/ad_create.html'
     model = Ad
     form_class = AdForm
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('webapp:index')
-        return super().dispatch(request, *args, **kwargs)
+    permission_required = 'webapp.add_ad'
 
     def form_valid(self, form):
         ad = form.save(commit=False)
         ad.author = self.request.user
         ad.save()
         return redirect('webapp:ad_view', pk=ad.pk)
+
+    def has_permission(self):
+        return super().has_permission() or self.request.user.is_authenticated
+
+    def handle_no_permission(self):
+        messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())
+        return redirect('webapp:index')
 
 
 class AdView(DetailView):
