@@ -92,7 +92,7 @@ class AdUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = 'webapp.change_ad'
 
     def has_permission(self):
-        return super().has_permission() or self.request.user == self.get_object().author
+        return self.request.user == self.get_object().author
 
     def handle_no_permission(self):
         messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())
@@ -111,7 +111,7 @@ class AdDeleteView(PermissionRequiredMixin, DeleteView):
         return redirect('webapp:index')
 
     def has_permission(self):
-        return super().has_permission() or self.request.user == self.get_object().author
+        return self.request.user == self.get_object().author
 
     def handle_no_permission(self):
         messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())

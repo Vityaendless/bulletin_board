@@ -1,6 +1,6 @@
-{% if perms.webapp.change_ad or request.user == ad.author %}
+{% if request.user == ad.author %}
     <a class="nav-link" href="{% url 'webapp:ad_update_view' pk=ad.pk %}">Update ad</a>
 {% endif %}
-{% if perms.webapp.delete_ad or request.user == ad.author %}
+{% if request.user == ad.author %}
     <a class="nav-link" href="{% url 'webapp:ad_delete_view' pk=ad.pk %}">Delete ad</a>
 {% endif %}
