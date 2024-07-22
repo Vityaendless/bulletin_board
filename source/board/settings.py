@@ -128,3 +128,6 @@ AUTH_USER_MODEL = 'accounts.AppUser'
 
 MEDIA_ROOT = Path.joinpath(BASE_DIR, 'uploads')
 MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = 'webapp:index'
+LOGOUT_REDIRECT_URL = 'accounts:login'
