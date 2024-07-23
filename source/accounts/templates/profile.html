@@ -6,6 +6,7 @@
     <p>Please log in previously</p>
 {% else %}
     <h1>User</h1>
+    {% include "partial/messages.html" %}
     <div class="card mb-3">
         <div class="card-body">
             <img src="{% if user_obj.avatar %}{{ user_obj.avatar.url }}{% else %}{% static 'img/default_user.jfif' %}{% endif %}" class="card-img-top w-50 mx-auto" alt="{{ ad.user_obj.username }}">
@@ -13,6 +14,10 @@
             <h5 class="card-title">{{ user_obj.username }}</h5>
             <p class="card-text">{{ user_obj.first_name }} {{ user_obj.last_name }} | {{ user_obj.email }}</p>
             <p class="card-text">{{ user_obj.phone }}</p>
+            {% if request.user.pk == user_obj.pk %}
+                <a href="{% url 'accounts:edit_user' user_obj.pk %}" >Edit user</a><br>
+                <a href="{% url 'accounts:user_password_change' user_obj.pk %}" >Change password</a>
+            {% endif %}
         </div>
     </div>
 {% endif %}

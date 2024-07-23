@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}User update{% endblock %}
+{% block content %}
+<h1>User update</h1>
+{% include 'partial/form.html' with value_submit='User change' form_method='post' enctype='multipart/form-data' %}
+{% endblock %}
