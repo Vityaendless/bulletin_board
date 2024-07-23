@@ -8,6 +8,7 @@
     <h1>User</h1>
     <div class="card mb-3">
         <div class="card-body">
+            <img src="{% if user_obj.avatar %}{{ user_obj.avatar.url }}{% else %}{% static 'img/default_user.jfif' %}{% endif %}" class="card-img-top w-50 mx-auto" alt="{{ ad.user_obj.username }}">
             <h1>Personal page: {{ user_obj.get_full_name|default:user_obj.username }}</h1>
             <h5 class="card-title">{{ user_obj.username }}</h5>
             <p class="card-text">{{ user_obj.first_name }} {{ user_obj.last_name }} | {{ user_obj.email }}</p>

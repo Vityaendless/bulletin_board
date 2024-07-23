@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Registration{% endblock %}
+{% block content %}
+<h1>Registration</h1>
+{% if not request.user.is_authenticated %}
+    {% include 'partial/form.html' with value_submit='Registration' form_method='post' enctype='multipart/form-data' %}
+{% else %}
+    <p>You entered as {{user}}</p>
+{% endif %}
+{% endblock %}
