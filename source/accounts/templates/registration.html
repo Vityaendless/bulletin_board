@@ -1,11 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Registration{% endblock %}
+
+{% block prescript %}
+    <script src="https://unpkg.com/imask"></script>
+{% endblock %}
+
 {% block content %}
 <h1>Registration</h1>
-{% if not request.user.is_authenticated %}
-    {% include 'partial/form.html' with value_submit='Registration' form_method='post' enctype='multipart/form-data' %}
-{% else %}
-    <p>You entered as {{user}}</p>
-{% endif %}
+    {% if not request.user.is_authenticated %}
+        {% include 'partial/form.html' with value_submit='Registration' form_method='post' enctype='multipart/form-data' %}
+    {% else %}
+        <p>You entered as {{user}}</p>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    {% if not request.user.is_authenticated %}
+        <script>
+            IMask(document.querySelector('#id_phone'), {
+              mask: '+{996}(000)000-000',
+            });
+        </script>
+    {% endif %}
 {% endblock %}

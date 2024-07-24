@@ -1,7 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}User update{% endblock %}
+
+{% block prescript %}
+    <script src="https://unpkg.com/imask"></script>
+{% endblock %}
+
 {% block content %}
-<h1>User update</h1>
-{% include 'partial/form.html' with value_submit='User change' form_method='post' enctype='multipart/form-data' %}
+    <h1>User update</h1>
+    {% include 'partial/form.html' with value_submit='User change' form_method='post' enctype='multipart/form-data' %}
+{% endblock %}
+
+{% block script %}
+    <script>
+        IMask(document.querySelector('#id_phone'), {
+          mask: '+{996}(000)000-000',
+        });
+    </script>
 {% endblock %}
