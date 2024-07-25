@@ -76,7 +76,7 @@ class AdView(PermissionRequiredMixin, DetailView):
     permission_required = 'webapp.view_ad'
 
     def has_permission(self):
-        if int(self.get_object().status) == 2:
+        if (int(self.get_object().status) == 2 or int(self.get_object().status) != 4) and self.request.user == self.get_object().author:
             return True
         return False
 
@@ -98,7 +98,9 @@ class AdUpdateView(PermissionRequiredMixin, UpdateView):
         return redirect('accounts:profile', pk=ad.author.pk)
 
     def has_permission(self):
-        return self.request.user == self.get_object().author
+        if int(self.get_object().status) != 3 and self.request.user == self.get_object().author:
+            return True
+        return False
 
     def handle_no_permission(self):
         messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())
