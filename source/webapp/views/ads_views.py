@@ -91,6 +91,12 @@ class AdUpdateView(PermissionRequiredMixin, UpdateView):
     form_class = AdForm
     permission_required = 'webapp.change_ad'
 
+    def form_valid(self, form):
+        ad = form.save(commit=False)
+        ad.status = 1
+        ad.save()
+        return redirect('accounts:profile', pk=ad.author.pk)
+
     def has_permission(self):
         return self.request.user == self.get_object().author
 
