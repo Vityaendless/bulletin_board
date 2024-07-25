@@ -1,0 +1,18 @@
+{% load static %}
+{% if in_details %}
+    <img src="{% if ad.photo %}{{ ad.photo.url }}{% else %}{% static 'img/ad.jpg' %}{% endif %}" class="card-img-top w-50 mx-auto" alt="{{ ad.title }}">
+{% endif %}
+<div class="card-body">
+    <h5 class="card-title">{{ ad.title }}</h5>
+    <p class="card-text"><b>Description: </b>{{ ad.description }}</p>
+    <p class="card-text"><b>Author: </b><a href="{% url 'accounts:profile' pk=ad.author.pk %}" >{{ ad.author }}</a>, {{ ad.author.email }}</p>
+    <p class="card-text"><b>Category: </b>{{ ad.category.name }}</p>
+    <p class="card-text"><b>Price: </b>{{ ad.price }}</p>
+    <p class="card-text">{{ ad.get_status_display }}</p>
+    {% if to_details %}
+        <a href="{% url 'webapp:ad_view' pk=ad.pk %}" class="card-link">Details</a>
+    {% endif %}
+    {% if in_details %}
+        <p class="card-text">{{ ad.created_at }} | {{ ad.updated_at }} | {{ ad.published_at }}</p>
+    {% endif %}
+</div>

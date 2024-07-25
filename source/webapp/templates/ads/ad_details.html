@@ -9,14 +9,6 @@
     <h1>Ad</h1>
     {% include "partial/messages.html" %}
     <div class="card mb-2">
-        <img src="{% if ad.photo %}{{ ad.photo.url }}{% else %}{% static 'img/ad.jpg' %}{% endif %}" class="card-img-top w-50 mx-auto" alt="{{ ad.title }}">
-        <div class="card-body">
-            <h5 class="card-title">{{ ad.title }}</h5>
-            <p class="card-text">{{ ad.description }}</p>
-            <p class="card-text">{{ ad.author }}</p>
-            <p class="card-text">{{ ad.price }}</p>
-            <p class="card-text">{{ ad.category.name }}</p>
-            <p class="card-text">{{ ad.created_at }} | {{ ad.updated_at }} | {{ ad.published_at }}</p>
-        </div>
+        {% include 'partial/ad_body.html' with in_details=True %}
     </div>
 {% endblock %}
