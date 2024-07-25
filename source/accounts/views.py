@@ -19,7 +19,10 @@ class ProfileView(DetailView):
     paginate_related_orphans = 1
 
     def get_context_data(self, **kwargs):
-        ads = self.object.ads.filter(Q(status='1') | Q(status='2') | Q(status='3'))
+        if self.request.user.pk == self.kwargs.get('pk'):
+            ads = self.object.ads.filter(Q(status='1') | Q(status='2') | Q(status='3'))
+        else:
+            ads = self.object.ads.filter(status='2')
         paginator = Paginator(ads, self.paginate_related_by, orphans=self.paginate_related_orphans)
         page_number = self.request.GET.get('page', 1)
         page = paginator.get_page(page_number)
