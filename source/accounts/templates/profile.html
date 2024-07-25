@@ -19,6 +19,7 @@
                 <a href="{% url 'accounts:user_password_change' user_obj.pk %}" >Change password</a>
             {% endif %}
         </div>
+        {% include 'partial/ads_list.html'%}
     </div>
 {% endif %}
 {% endblock %}

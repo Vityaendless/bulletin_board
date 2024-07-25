@@ -4,21 +4,5 @@
     <div>
         {% include 'partial/search.html' %}
     </div>
-    <div>
-        {% include 'partial/pagination.html' %}
-    </div>
-    <h1>Ads list</h1>
-    {% include "partial/messages.html" %}
-    {% for ad in ads %}
-        <div class="card my-1">
-            <div class="card-body">
-                <h5 class="card-title">{{ ad.title }}</h5>
-                <p class="card-text">{{ ad.description }}</p>
-                <p class="card-text">{{ ad.get_status_display }}</p>
-                <a href="{% url 'webapp:ad_view' pk=ad.pk %}" class="card-link">Details</a>
-            </div>
-        </div>
-    {% empty %}
-        <p>No ads</p>
-    {% endfor %}
+    {% include 'partial/ads_list.html'%}
 {% endblock %}
