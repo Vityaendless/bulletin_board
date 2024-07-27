@@ -2,9 +2,6 @@
 {% load static %}
 {% block title %}User: {{ user_obj.get_full_name }}{% endblock %}
 {% block content %}
-{% if not request.user.is_authenticated %}
-    <p>Please log in previously</p>
-{% else %}
     <h1>User</h1>
     {% include "partial/messages.html" %}
     <div class="card mb-3">
@@ -21,5 +18,4 @@
         </div>
         {% include 'partial/ads_list.html'%}
     </div>
-{% endif %}
 {% endblock %}

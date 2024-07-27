@@ -76,7 +76,11 @@ class AdView(PermissionRequiredMixin, DetailView):
     permission_required = 'webapp.view_ad'
 
     def has_permission(self):
-        if (int(self.get_object().status) == 2 or int(self.get_object().status) != 4) and self.request.user == self.get_object().author:
+        is_author = self.request.user == self.get_object().author
+        is_approve = int(self.get_object().status) == 2
+        is_delete = int(self.get_object().status) != 4
+        is_other = int(self.get_object().status) not in [1, 3]
+        if (is_approve or is_author) and (is_other or is_author) and is_delete:
             return True
         return False
 
@@ -93,12 +97,16 @@ class AdUpdateView(PermissionRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         ad = form.save(commit=False)
-        ad.status = 1
+        if ad.status == '2':
+            ad.status = 1
         ad.save()
         return redirect('accounts:profile', pk=ad.author.pk)
 
     def has_permission(self):
-        if int(self.get_object().status) != 3 and self.request.user == self.get_object().author:
+        is_author = self.request.user == self.get_object().author
+        is_delete = int(self.get_object().status) != 4
+        is_rejection = int(self.get_object().status) != 3
+        if is_delete and is_rejection and is_author:
             return True
         return False
 
@@ -119,7 +127,11 @@ class AdDeleteView(PermissionRequiredMixin, DeleteView):
         return redirect('webapp:index')
 
     def has_permission(self):
-        return self.request.user == self.get_object().author
+        is_author = self.request.user == self.get_object().author
+        is_delete = int(self.get_object().status) != 4
+        if is_author and is_delete:
+            return True
+        return False
 
     def handle_no_permission(self):
         messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())
