@@ -11,3 +11,6 @@
 {% if perms.webapp.change_ad or request.user.is_authenticated %}
     <a class="nav-link" href="{% url 'webapp:ad_create' %}">New ad</a>
 {% endif %}
+{% if perms.webapp.see_no_moderate_ads %}
+    <a class="nav-link" href="{% url 'webapp:no_moderate_list' %}">Moderate list</a>
+{% endif %}

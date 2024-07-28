@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}No moderate ads list{% endblock %}
+{% block content %}
+    <h1>No moderate ads list</h1>
+    {% include 'partial/ads_list.html' with moderate=True %}
+{% endblock %}

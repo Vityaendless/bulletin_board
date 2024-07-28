@@ -25,6 +25,13 @@ class Ad(AbstractModel):
     status = models.CharField(max_length=30, null=False, blank=False, verbose_name='Category', choices=STATUSES, default=1)
     published_at = models.DateTimeField(verbose_name="Published at", null=True, blank=True)
 
+    class Meta:
+        permissions = [
+            ('see_no_moderate_ads', 'Can see no moderate ads'),
+            ('approve_ad', 'Can approve ad'),
+            ('reject_ad', 'Can reject ad')
+        ]
+
     def __str__(self):
         return f"This is ad {self.id}, {self.title}"
 

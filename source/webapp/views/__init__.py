@@ -1,1 +1,1 @@
-from .ads_views import IndexView, AdCreateView, AdView, AdUpdateView, AdDeleteView
+from .ads_views import IndexView, AdCreateView, AdView, AdUpdateView, AdDeleteView, NoModerateAdsView

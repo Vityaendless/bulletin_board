@@ -136,3 +136,18 @@ class AdDeleteView(PermissionRequiredMixin, DeleteView):
     def handle_no_permission(self):
         messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())
         return redirect('webapp:ad_view', pk=self.get_object().pk)
+
+
+class NoModerateAdsView(PermissionRequiredMixin, ListView):
+    template_name = 'ads/no_moderate_list.html'
+    context_object_name = 'ads'
+    paginate_by = 10
+    paginate_orphans = 1
+    permission_required = 'webapp.see_no_moderate_ads'
+
+    def handle_no_permission(self):
+        messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())
+        return redirect('webapp:index')
+
+    def get_queryset(self):
+        return Ad.objects.filter(status=1).order_by('-created_at')
