@@ -28,8 +28,6 @@ class Ad(AbstractModel):
     class Meta:
         permissions = [
             ('see_no_moderate_ads', 'Can see no moderate ads'),
-            ('approve_ad', 'Can approve ad'),
-            ('reject_ad', 'Can reject ad')
         ]
 
     def __str__(self):

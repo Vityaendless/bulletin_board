@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'accounts',
     'webapp',
+    'api_v1',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +55,23 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'board.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'anon': '1/day',
+    #     'user': '1000/day'
+    # }
+}
 
 TEMPLATES = [
     {
