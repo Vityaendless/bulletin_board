@@ -25,8 +25,26 @@ async function makeRequest(url, method='GET', data=null, token=null) {
     }
 }
 
-async function onLoad() {
-    console.log("response");
+async function onSubmitForExit(e) {
+    e.preventDefault();
+    console.log(e.target);
+    try {
+        let response = await makeRequest(
+            'http://127.0.0.1:8000/api/v1/logout/',
+            "POST",
+            {},
+            localStorage.getItem('apiToken')
+        );
+        localStorage.removeItem('apiToken');
+        console.log(response);
+    } finally {
+        e.target.submit();
+    }
 }
 
-window.addEventListener('load', onLoad);
+async function onLoadForExit() {
+    let logoutForm = document.getElementById('logout-form');
+    logoutForm.addEventListener('submit', onSubmitForExit);
+}
+
+window.addEventListener('load', onLoadForExit);

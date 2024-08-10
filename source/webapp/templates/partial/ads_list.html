@@ -5,7 +5,11 @@
 {% include "partial/messages.html" %}
 {% for ad in ads %}
     <div class="card my-1">
-        {% include 'partial/ad_body.html' with to_details=True %}
+        {% if moderate %}
+            {% include 'partial/ad_body.html' with to_details=True moderate=True %}
+        {% else %}
+            {% include 'partial/ad_body.html' with to_details=True %}
+        {% endif %}
     </div>
 {% empty %}
     <p>No ads</p>

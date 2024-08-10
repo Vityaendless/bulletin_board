@@ -15,4 +15,9 @@
     {% if in_details %}
         <p class="card-text">{{ ad.created_at }} | {{ ad.updated_at }} | {{ ad.published_at }}</p>
     {% endif %}
+    {% if moderate %}
+        <button type="button" class="nav-link border moderation-action" data-action="approve" data-url="{% url 'api_v1:moderation' ad.pk %}">
+            Action
+        </button>
+    {% endif %}
 </div>

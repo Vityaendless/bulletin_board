@@ -5,3 +5,47 @@
     <h1>No moderate ads list</h1>
     {% include 'partial/ads_list.html' with moderate=True %}
 {% endblock %}
+{% block script %}
+    <script>
+        async function makeRequest(url, method='GET', data={}, token=null) {
+            let headers = {
+                "Content-Type": "application/json"
+            };
+            if (token) {
+                headers['Authorization'] = 'Token ' + token;
+            }
+            let body = JSON.stringify(data);
+            let response = await fetch(url, {method, headers, body: JSON.stringify(data)});
+            if (response.ok) {
+                return await response.json();
+            } else {
+                let error = new Error(response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }
+
+        async function onClick(e) {
+            e.preventDefault();
+            let d = e.currentTarget.dataset['action'];
+            let url = e.currentTarget.dataset['url'];
+            let method = 'PUT';
+            let response = await makeRequest(
+                url,
+                method,
+                {},
+                localStorage.getItem('apiToken')
+            );
+
+        }
+
+        async function onLoad() {
+            let buttons = document.getElementsByClassName('moderation-action');
+            for (let button of buttons) {
+                button.addEventListener('click', onClick);
+            }
+        }
+
+        window.addEventListener('load', onLoad);
+    </script>
+{% endblock %}

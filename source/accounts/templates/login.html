@@ -4,8 +4,11 @@
 {% block content %}
     <h1>Log in</h1>
     {% if not request.user.is_authenticated %}
-        <form action="{% url 'accounts:login' %}" method="post" class="text-center">
+        <form action="{% url 'accounts:login' %}" method="post" class="text-center" id="loginForm">
             {% csrf_token %}
+            {% if has_error %}
+                <p class="form-error">Wrong email or password</p>
+            {% endif %}
             <div class="form-group">
                 <label for="username" class="form-label">Login:</label>
                 <input type="text" name="username" id="username">
@@ -19,4 +22,55 @@
     {% else %}
         <p>You entered as {{user}}</p>
     {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script>
+        async function makeRequest(url, method='GET', data={}, token=null) {
+            let headers = {
+                "Content-Type": "application/json"
+            };
+            if (token) {
+                headers['Authorization'] = 'Token ' + token;
+            }
+            let body = JSON.stringify(data);
+            let response = await fetch(url, {method, headers, body: JSON.stringify(data)});
+            if (response.ok) {
+                return await response.json();
+            } else {
+                let error = new Error(response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }
+
+        async function onSubmit(e) {
+            e.preventDefault();
+            console.log(e.target);
+            let username = e.target.username.value;
+            let password = e.target.password.value;
+            try {
+                let response = await makeRequest(
+                'http://127.0.0.1:8000/api/v1/login/',
+                "POST",
+                {
+                 "username": username,
+                 "password": password
+                 }
+                );
+                console.log(response);
+                localStorage.setItem('apiToken', response.token);
+            } finally {
+                e.target.submit();
+            }
+        }
+
+        async function onLoad() {
+            let loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', onSubmit);
+
+        }
+
+        window.addEventListener('load', onLoad);
+    </script>
 {% endblock %}
