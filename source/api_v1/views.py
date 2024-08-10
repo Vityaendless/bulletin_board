@@ -20,16 +20,21 @@ class LogoutView(APIView):
 
 
 class ModerationView(APIView):
+    permission_classes = [IsModeratorPermission]
+
     def put(self, request, *args, **kwargs):
         if request.body:
-            data = json.loads(request.body)
             ad = get_object_or_404(Ad, pk=kwargs.get('pk'))
-            if data['action'] == 'approve':
-                ad.status = 2
-                ad.published_at = datetime.now()
-            elif data['action'] == 'reject':
-                ad.status = 3
-            ad.save()
-            return Response({'id': ad.id, 'published_at': ad.published_at, 'status': ad.status}, status=201)
+            if ad.status == '1':
+                data = json.loads(request.body)
+                if data['action'] == 'approve':
+                    ad.status = 2
+                    ad.published_at = datetime.now()
+                elif data['action'] == 'reject':
+                    ad.status = 3
+                ad.save()
+                return Response({'id': ad.id, 'published_at': ad.published_at, 'status': ad.status}, status=201)
+            else:
+                return Response({'error': 'Object is not in moderation'}, status=400)
         else:
             return Response({'error': 'No correct data'}, status=400)

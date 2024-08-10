@@ -1,9 +1,9 @@
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import BasePermission
 
 
-class IsModeratorPermission(IsAuthenticated):
+class IsModeratorPermission(BasePermission):
 
-    def has_object_permission(self, request, view, obj):
+    def has_permission(self, request, view):
         if not request.user.has_perm('webapp.see_no_moderate_ads'):
             return False
         return True

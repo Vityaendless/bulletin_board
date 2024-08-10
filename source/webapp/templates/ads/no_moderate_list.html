@@ -36,7 +36,8 @@
                 {'action': d},
                 localStorage.getItem('apiToken')
             );
-
+            let parent = e.target.parentNode;
+            parent.remove();
         }
 
         async function onLoad() {
