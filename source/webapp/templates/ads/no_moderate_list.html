@@ -33,16 +33,20 @@
             let response = await makeRequest(
                 url,
                 method,
-                {},
+                {'action': d},
                 localStorage.getItem('apiToken')
             );
 
         }
 
         async function onLoad() {
-            let buttons = document.getElementsByClassName('moderation-action');
-            for (let button of buttons) {
-                button.addEventListener('click', onClick);
+            let buttonsApprove = document.getElementsByClassName('moderation-approve');
+            let buttonsReject = document.getElementsByClassName('moderation-reject');
+            for (let buttonApprove of buttonsApprove) {
+                buttonApprove.addEventListener('click', onClick);
+            }
+            for (let buttonReject of buttonsReject) {
+                buttonReject.addEventListener('click', onClick);
             }
         }
 

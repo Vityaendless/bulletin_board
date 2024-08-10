@@ -44,7 +44,9 @@ async function onSubmitForExit(e) {
 
 async function onLoadForExit() {
     let logoutForm = document.getElementById('logout-form');
-    logoutForm.addEventListener('submit', onSubmitForExit);
+    if(logoutForm) {
+        logoutForm.addEventListener('submit', onSubmitForExit);
+    }
 }
 
 window.addEventListener('load', onLoadForExit);

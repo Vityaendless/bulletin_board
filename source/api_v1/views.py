@@ -1,17 +1,16 @@
 import json
+from datetime import datetime
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 
 from webapp.models import Ad
 from .permissions import IsModeratorPermission
-from .serializers import AdSerializer
 
 
 class LogoutView(APIView):
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -27,6 +26,7 @@ class ModerationView(APIView):
             ad = get_object_or_404(Ad, pk=kwargs.get('pk'))
             if data['action'] == 'approve':
                 ad.status = 2
+                ad.published_at = datetime.now()
             elif data['action'] == 'reject':
                 ad.status = 3
             ad.save()
