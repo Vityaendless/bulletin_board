@@ -12,9 +12,7 @@ class AdAdmin(admin.ModelAdmin):
         'photo', 'title', 'description', 'author', 'category', 'price',
         'status', 'created_at', 'published_at', 'updated_at'
     ]
-    readonly_fields = ['created_at',
-                       #'published_at',
-                       'updated_at']
+    readonly_fields = ['created_at', 'updated_at']
 
 
 admin.site.register(Comment)

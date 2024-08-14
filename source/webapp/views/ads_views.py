@@ -88,6 +88,11 @@ class AdView(PermissionRequiredMixin, DetailView):
         messages.add_message(self.request, messages.WARNING, Message.get_no_access_message())
         return redirect('webapp:index')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = self.object.comments.order_by('-created_at')
+        return context
+
 
 class AdUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'ads/ad_update.html'

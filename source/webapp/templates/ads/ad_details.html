@@ -11,4 +11,16 @@
     <div class="card mb-2">
         {% include 'partial/ad_body.html' with in_details=True %}
     </div>
+    <div>
+        {% for comment in comments %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Author: {{ comment.author }}</h5>
+                    <p class="card-text">{{ comment.text }}</p>
+                    <p class="card-text">{{ comment.created_at }}</p>
+                    <a href="#" class="card-link">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
