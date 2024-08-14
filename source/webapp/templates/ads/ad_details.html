@@ -12,6 +12,18 @@
         {% include 'partial/ad_body.html' with in_details=True %}
     </div>
     <div>
+        <button type="button" class="mb-1 nav-link border add-comment" data-action="addComment" data-visible="toVisible">
+            Add comment
+        </button>
+        <form action="" method="POST" class="border comment-form" hidden>
+            {% csrf_token %}
+            <label for="story">Write your comment here...:</label><br>
+            <textarea id="story" name="story" rows="5" cols="50">
+            </textarea><br>
+            <input class="btn btn-light border border-black" type="submit" value="Send comment"/>
+        </form>
+    </div>
+    <div>
         {% for comment in comments %}
             <div class="card">
                 <div class="card-body">
@@ -21,6 +33,50 @@
                     <a href="#" class="card-link">Delete</a>
                 </div>
             </div>
+        {% empty %}
+            <p>No comments</p>
         {% endfor %}
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        async function makeRequest(url, method='GET', data={}, token=null) {
+            let headers = {
+                "Content-Type": "application/json"
+            };
+            if (token) {
+                headers['Authorization'] = 'Token ' + token;
+            }
+            let body = JSON.stringify(data);
+            let response = await fetch(url, {method, headers, body: JSON.stringify(data)});
+            if (response.ok) {
+                return await response.json();
+            } else {
+                let error = new Error(response.statusText);
+                error.response = response;
+                throw error;
+            }
+        }
+
+        async function onAddCommentClick(e) {
+            e.preventDefault();
+            let commentForm = document.getElementsByClassName('comment-form');
+            if (e.currentTarget.dataset.visible == "toVisible") {
+                e.currentTarget.dataset.visible = 'toNotVisible';
+                e.currentTarget.textContent = 'Hide form';
+                commentForm[0].hidden = false;
+            } else {
+                e.currentTarget.dataset.visible = 'toVisible';
+                e.currentTarget.textContent = 'Add comment';
+                commentForm[0].hidden = true;
+            };
+        }
+
+        async function onLoad() {
+            let addComment = document.getElementsByClassName('add-comment');
+            addComment[0].addEventListener('click', onAddCommentClick);
+        }
+
+        window.addEventListener('load', onLoad);
+    </script>
 {% endblock %}
