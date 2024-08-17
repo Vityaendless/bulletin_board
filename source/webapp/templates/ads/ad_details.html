@@ -32,7 +32,7 @@
                     <h5 class="card-title">Author: {{ comment.author }}</h5>
                     <p class="card-text">{{ comment.text }}</p>
                     <p class="card-text">{{ comment.created_at }}</p>
-                    <a href="#" class="card-link">Delete</a>
+                    <a href="" class="delete-comment" data-comment="{{ comment.pk }}" data-url="{% url 'api_v1:comment-list' %}">Delete</a>
                 </div>
             </div>
         {% empty %}
@@ -79,7 +79,6 @@
             let text = document.getElementById('text').value;
             let url = e.currentTarget.dataset['url'];
             let adKey = Number(e.currentTarget.dataset['ad']);
-            console.log(adKey);
             let method = 'POST';
             let response = await makeRequest(
                 url,
@@ -90,7 +89,21 @@
                 },
                 localStorage.getItem('apiToken')
             );
-            console.log(response);
+        }
+
+        async function onDeleteCommentClick(e) {
+            e.preventDefault();
+            let commentKey = Number(e.currentTarget.dataset['comment']);
+            let url = e.currentTarget.dataset['url'] + commentKey;
+            let method = 'DELETE';
+            let response = await makeRequest(
+                url,
+                method,
+                {
+                    "comment": commentKey
+                },
+                localStorage.getItem('apiToken')
+            );
         }
 
         async function onLoad() {
@@ -99,6 +112,11 @@
 
             let sendComment = document.getElementsByClassName('send-comment');
             sendComment[0].addEventListener('click', onSendCommentClick);
+
+            let buttonsDeleteComment = document.getElementsByClassName('delete-comment');
+            for (let buttonDeleteComment of buttonsDeleteComment) {
+                buttonDeleteComment.addEventListener('click', onDeleteCommentClick);
+            }
         }
 
         window.addEventListener('load', onLoad);

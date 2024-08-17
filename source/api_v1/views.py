@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from webapp.models import Ad, Comment
-from .permissions import IsModeratorPermission
+from .permissions import IsModeratorPermission, IsAuthorPermission
 from .serializers import CommentModelSerializer
 
 
@@ -45,4 +45,4 @@ class ModerationView(APIView):
 class CommentModelViewSet(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentModelSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated | IsAuthorPermission]
