@@ -4,9 +4,11 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
 
-from webapp.models import Ad
+from webapp.models import Ad, Comment
 from .permissions import IsModeratorPermission
+from .serializers import CommentModelSerializer
 
 
 class LogoutView(APIView):
@@ -38,3 +40,9 @@ class ModerationView(APIView):
                 return Response({'error': 'Object is not in moderation'}, status=400)
         else:
             return Response({'error': 'No correct data'}, status=400)
+
+
+class CommentModelViewSet(ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentModelSerializer
+    permission_classes = [IsAuthenticated]
