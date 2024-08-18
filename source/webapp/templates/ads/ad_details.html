@@ -32,7 +32,9 @@
                     <h5 class="card-title">Author: {{ comment.author }}</h5>
                     <p class="card-text">{{ comment.text }}</p>
                     <p class="card-text">{{ comment.created_at }}</p>
-                    <a href="" class="delete-comment" data-comment="{{ comment.pk }}" data-url="{% url 'api_v1:comment-list' %}">Delete</a>
+                    {% if request.user == comment.author %}
+                        <a href="" class="delete-comment" data-comment="{{ comment.pk }}" data-url="{% url 'api_v1:comment-list' %}" data-refresh="{% url 'webapp:ad_view' pk=ad.pk %}">Delete</a>
+                    {% endif %}
                 </div>
             </div>
         {% empty %}
@@ -95,6 +97,7 @@
             e.preventDefault();
             let commentKey = Number(e.currentTarget.dataset['comment']);
             let url = e.currentTarget.dataset['url'] + commentKey + "/";
+            let refreshUrl = e.currentTarget.dataset['refresh'];
             let method = 'DELETE';
             let response = await makeRequest(
                 url,
@@ -106,16 +109,23 @@
             );
         }
 
+        async function onClickRefresh(e) {
+            e.preventDefault();
+            location.reload();
+        }
+
         async function onLoad() {
             let addComment = document.getElementsByClassName('add-comment');
             addComment[0].addEventListener('click', onAddCommentClick);
 
             let sendComment = document.getElementsByClassName('send-comment');
             sendComment[0].addEventListener('click', onSendCommentClick);
+            sendComment[0].addEventListener('click', onClickRefresh);
 
             let buttonsDeleteComment = document.getElementsByClassName('delete-comment');
             for (let buttonDeleteComment of buttonsDeleteComment) {
                 buttonDeleteComment.addEventListener('click', onDeleteCommentClick);
+                buttonDeleteComment.addEventListener('click', onClickRefresh);
             }
         }
 
