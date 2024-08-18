@@ -9,6 +9,11 @@ class IsModeratorPermission(BasePermission):
         return True
 
 
+class IsAuthenticatedForComment(IsAuthenticated):
+    def has_object_permission(self, request, view, obj):
+        return request.method in ['POST'] and request.user.is_authenticated
+
+
 class IsAuthorPermission(IsAuthenticated):
 
     def has_object_permission(self, request, view, obj):

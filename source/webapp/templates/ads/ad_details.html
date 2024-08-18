@@ -94,7 +94,7 @@
         async function onDeleteCommentClick(e) {
             e.preventDefault();
             let commentKey = Number(e.currentTarget.dataset['comment']);
-            let url = e.currentTarget.dataset['url'] + commentKey;
+            let url = e.currentTarget.dataset['url'] + commentKey + "/";
             let method = 'DELETE';
             let response = await makeRequest(
                 url,
